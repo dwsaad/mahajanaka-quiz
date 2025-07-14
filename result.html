@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Result</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>ผลลัพธ์ของคุณ</h1>
+    <p id="score-text"></p>
+    <button onclick="location.href='quiz.html'">ทำแบบทดสอบอีกครั้ง</button>
+    <button onclick="showAnswers()">แสดงคำตอบ</button>
+    <div id="answers-list"></div>
+  </div>
+
+  <script>
+    const score = localStorage.getItem('score');
+    const userAnswers = JSON.parse(localStorage.getItem('userAnswers') || "[]");
+    const questions = JSON.parse(localStorage.getItem('questions') || "[]");
+
+    document.getElementById('score-text').innerText = `คุณได้ ${score} จาก ${questions.length} คะเเนน`;
+
+    function showAnswers() {
+      const list = document.getElementById('answers-list');
+      list.innerHTML = "";
+      questions.forEach((q, i) => {
+        const isCorrect = q.answer === userAnswers[i];
+        const color = isCorrect ? "green" : "red";
+        list.innerHTML += `
+          <div style="color:${color}">
+            <strong>Q${i + 1}:</strong> ${q.question}<br>
+            Your Answer: ${userAnswers[i]}<br>
+            Correct Answer: ${q.answer}<br><br>
+          </div>`;
+      });
+    }
+  </script>
+</body>
+</html>
